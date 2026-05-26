@@ -41,17 +41,9 @@ cp .env.example .env
 RESOLVE_SCRIPT_LIB=D:\MyCustomPath\DaVinci Resolve\fusionscript.dll
 ```
 
-### 3. Enable scripting in DaVinci Resolve
+### 3. Run the test
 
-Open DaVinci Resolve, then:
-
-> **Preferences → System → General → Enable scripting for local connections**
-
-Restart Resolve after changing this setting.
-
-### 4. Run the test
-
-With DaVinci Resolve open and a project/timeline active:
+With DaVinci Resolve Studio open and a project/timeline active:
 
 ```
 uv run test.py
@@ -59,7 +51,7 @@ uv run test.py
 
 All four checks should pass before you add the connector. `uv` will automatically install the required packages into an isolated environment on the first run.
 
-### 5. Add to Claude Code
+### 4. Add to Claude Code
 
 In Claude Code (or any MCP-compatible client), add a new MCP server:
 
@@ -107,7 +99,7 @@ macOS / Linux:
 → DaVinci Resolve Studio is not installed, or `fusionscript.dll` is in a non-standard location. Set `RESOLVE_SCRIPT_LIB` in `.env`.
 
 **`DaVinci Resolve is not running or scripting is unavailable`**
-→ Start Resolve and enable scripting in Preferences (see step 3).
+→ Start DaVinci Resolve Studio and open a project.
 
 **`No project / No timeline is currently open`**
 → Open a project and switch to the Edit page with a timeline visible.
