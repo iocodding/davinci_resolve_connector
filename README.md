@@ -8,7 +8,7 @@ A [Model Context Protocol](https://modelcontextprotocol.io) server that lets Cla
 
 | Requirement | Version |
 |---|---|
-| [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve) | Any recent version |
+| [DaVinci Resolve **Studio**](https://www.blackmagicdesign.com/products/davinciresolve/studio) | Any recent version (Studio required — external scripting is not available in the free version) |
 | [Python](https://www.python.org/downloads/) | 3.10 or later |
 | [Node.js](https://nodejs.org/) | 18 or later |
 
@@ -19,7 +19,7 @@ A [Model Context Protocol](https://modelcontextprotocol.io) server that lets Cla
 ### 1. Install dependencies
 
 ```
-npm install
+pnpm install
 ```
 
 ### 2. Create your environment file
