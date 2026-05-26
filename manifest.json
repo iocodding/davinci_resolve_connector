@@ -1,0 +1,17 @@
+{
+  "manifest_version": "0.3",
+  "name": "davinci-resolve",
+  "version": "1.0.0",
+  "description": "Control DaVinci Resolve — get the current timeline and project",
+  "author": {
+    "name": "Ivo"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/index.js"]
+    }
+  }
+}
