@@ -9,36 +9,37 @@ A [Model Context Protocol](https://modelcontextprotocol.io) server that lets Cla
 | Requirement | Version |
 |---|---|
 | [DaVinci Resolve **Studio**](https://www.blackmagicdesign.com/products/davinciresolve/studio) | Any recent version (Studio required — external scripting is not available in the free version) |
-| [Python](https://www.python.org/downloads/) | 3.10 or later |
-| [Node.js](https://nodejs.org/) | 18 or later |
+| [uv](https://docs.astral.sh/uv/getting-started/installation/) | Latest |
+
+No Node.js, no pip, no virtualenv management — `uv` handles everything automatically.
 
 ---
 
 ## Setup
 
-### 1. Install dependencies
+### 1. Install uv
 
 ```
-pnpm install
+# Windows
+winget install astral-sh.uv
+
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### 2. Create your environment file
+### 2. Configure environment (if needed)
+
+If DaVinci Resolve Studio is installed in the **default location**, skip this step entirely.
+
+If you installed it somewhere else, copy `.env.example` to `.env` and set the path:
 
 ```
 cp .env.example .env
 ```
 
-Open `.env` and set the required value:
-
 ```env
-PYTHON_PATH=C:\Users\YourName\AppData\Local\Programs\Python\Python312\python.exe
+RESOLVE_SCRIPT_LIB=D:\MyCustomPath\DaVinci Resolve\fusionscript.dll
 ```
-
-**Finding your Python path:**
-- **Windows** — Run `where python` or `where python3` in a terminal, or look in `%LOCALAPPDATA%\Programs\Python\`
-- **macOS / Linux** — Run `which python3`
-
-The optional value `RESOLVE_SCRIPT_LIB` is only needed if DaVinci Resolve is installed in a non-standard location. Leave it blank if you used the default installer.
 
 ### 3. Enable scripting in DaVinci Resolve
 
@@ -53,19 +54,32 @@ Restart Resolve after changing this setting.
 With DaVinci Resolve open and a project/timeline active:
 
 ```
-node test.js
+uv run test.py
 ```
 
-All five checks should pass before you add the connector. If a check fails, the test prints a specific fix.
+All four checks should pass before you add the connector. `uv` will automatically install the required packages into an isolated environment on the first run.
 
 ### 5. Add to Claude Code
 
-In Claude Code (or any MCP-compatible client), add a new MCP server pointing to this directory:
+In Claude Code (or any MCP-compatible client), add a new MCP server:
 
 ```json
 {
-  "command": "node",
-  "args": ["/absolute/path/to/davinci_mcp/index.js"]
+  "davinci-resolve": {
+    "command": "uv",
+    "args": ["run", "C:\\path\\to\\davinci_mcp\\server.py"]
+  }
+}
+```
+
+macOS / Linux:
+
+```json
+{
+  "davinci-resolve": {
+    "command": "uv",
+    "args": ["run", "/path/to/davinci_mcp/server.py"]
+  }
 }
 ```
 
@@ -89,11 +103,8 @@ In Claude Code (or any MCP-compatible client), add a new MCP server pointing to 
 
 ## Troubleshooting
 
-**`PYTHON_PATH is not set`**
-→ You have not created `.env`, or `PYTHON_PATH` is missing from it.
-
 **`DaVinciResolveScript not found`**
-→ DaVinci Resolve is not installed, or its scripting modules are in a non-standard location. Set `RESOLVE_SCRIPT_LIB` and `RESOLVE_SCRIPT_API` in `.env` to point to the correct paths.
+→ DaVinci Resolve Studio is not installed, or `fusionscript.dll` is in a non-standard location. Set `RESOLVE_SCRIPT_LIB` in `.env`.
 
 **`DaVinci Resolve is not running or scripting is unavailable`**
 → Start Resolve and enable scripting in Preferences (see step 3).
